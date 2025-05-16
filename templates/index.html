@@ -1,27 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Hola Mundo</title>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
     <style>
-        body { font-family: Arial; text-align: center; padding-top: 50px; background: #f0f0f0; }
-        h1 { color: #222; }
-        a.button {
-            display: inline-block;
-            padding: 10px 20px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin: 10px;
             font-size: 16px;
-            background-color: #28a745;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
             color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 22px;
+            color: #333;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+            background-color: #6c757d;
             text-decoration: none;
             border-radius: 5px;
-            margin-top: 20px;
+            transition: background-color 0.3s ease;
         }
-        a.button:hover {
-            background-color: #1e7e34;
+
+        .back-button:hover {
+            background-color: #495057;
         }
     </style>
 </head>
 <body>
-    <h1>Hello world from python</h1>
-    <a href="https://front-paas-production.up.railway.app/" class="button">Regresar al inicio</a>
+    <h1>Calculator</h1>
+    <form method="POST">
+        <input type="number" name="num1" step="any" placeholder="Number 1" required>
+        <select name="operation">
+            <option value="add">+</option>
+            <option value="subtract">−</option>
+            <option value="multiply">×</option>
+            <option value="divide">÷</option>
+        </select>
+        <input type="number" name="num2" step="any" placeholder="Number 2" required>
+        <button type="submit">Calculate</button>
+        {% if result is not none %}
+            <div class="result">Result: {{ result }}</div>
+        {% endif %}
+    </form>
+    <a href="https://front-paas-production.up.railway.app" class="back-button">Back to Index</a>
 </body>
 </html>
