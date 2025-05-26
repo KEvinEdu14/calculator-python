@@ -6,50 +6,36 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout del código
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: 🐍 Setup Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: 📦 Instalar dependencias
-        run: |
-          pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-      - name: 🐳 Login DockerHub
+      - name: Login DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: 🏗️ Build & Push Docker Image
+      - name: Build and push Docker image
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/flask-calculator .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-calculator
 
-      - name: 🚀 Deploy via Railway API v2 (mutación actualizada)
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+      - name: Confirm deployment
         run: |
-          printf '%s\n' "{
-            \"query\": \"mutation CreateDeployment(\$input: CreateDeploymentInput!) { createDeployment(input: \$input) { id } }\",
-            \"variables\": {
-              \"input\": {
-                \"projectId\": \"${PROJECT_ID}\"
-              }
-            }
-          }" > payload.json
-
-          curl -X POST https://backboard.railway.com/graphql/v2 \
-            -H 'Authorization: Bearer '"$RAILWAY_TOKEN"'' \
-            -H 'Content-Type: application/json' \
-            --data-binary @payload.json
+          echo "Docker image pushed successfully."
+          echo "Railway will deploy automatically via GitHub integration."
+          echo "Check deployment status at:"
+          echo "https://railway.app/project/${{ secrets.RAILWAY_PROJECT_ID }}"
 
 
