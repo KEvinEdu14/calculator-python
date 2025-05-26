@@ -33,13 +33,13 @@ jobs:
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/flask-calculator .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-calculator
 
-      - name: 🚀 Deploy via Railway API v2 (alternative mutation)
+      - name: 🚀 Deploy via Railway API v2 (mutación actualizada)
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
         run: |
           printf '%s\n' "{
-            \"query\": \"mutation DeploymentCreate(\$input: DeploymentCreateInput!) { deploymentCreate(input: \$input) { id } }\",
+            \"query\": \"mutation CreateDeployment(\$input: CreateDeploymentInput!) { createDeployment(input: \$input) { id } }\",
             \"variables\": {
               \"input\": {
                 \"projectId\": \"${PROJECT_ID}\"
@@ -51,4 +51,5 @@ jobs:
             -H 'Authorization: Bearer '"$RAILWAY_TOKEN"'' \
             -H 'Content-Type: application/json' \
             --data-binary @payload.json
+
 
