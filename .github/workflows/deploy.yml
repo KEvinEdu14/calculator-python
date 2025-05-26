@@ -6,12 +6,11 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -21,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Docker Login
+      - name: Docker login
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -32,14 +31,9 @@ jobs:
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/flask-calculator .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-calculator
 
-      - name: Install Railway CLI
-        run: curl -fsSL https://railway.app/install.sh | sh
-        
-      - name: 🚀 Deploy with Railway CLI
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - name: Notify deployment
         run: |
-          railway link -p 3b18d122-806e-42b8-8b70-8ccf348ba791
-          railway up --no-build
+          echo "Docker image pushed."
+          echo "Railway will deploy automatically via GitHub integration."
 
 
