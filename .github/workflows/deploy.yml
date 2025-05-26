@@ -43,7 +43,4 @@ jobs:
         curl -X POST https://backboard.railway.app/graphql \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}" \
-        -d '{
-          "query": "mutation Deploy($projectId: String!) { deploymentCreate(input: {projectId: $projectId}) { id }}",
-          "variables": { "projectId": "${{ secrets.RAILWAY_PROJECT_ID }}" }
-        }'
+        --data-binary "{\"query\":\"mutation Deploy(\$projectId: String!) { deploymentCreate(input: {projectId: \$projectId}) { id }}\",\"variables\":{\"projectId\":\"${{ secrets.RAILWAY_PROJECT_ID }}\"}}"
