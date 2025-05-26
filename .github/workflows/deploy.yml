@@ -36,11 +36,9 @@ jobs:
       - name: 🚀 Instalar Railway CLI
         run: curl -fsSL https://railway.app/install.sh | sh
 
-      - name: 🔐 Login y link con Railway CLI
+      - name: 🌐 Desplegar con Railway CLI (vía RAILWAY_TOKEN)
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_CLI_TOKEN }}
         run: |
-          echo "${{ secrets.RAILWAY_CLI_TOKEN }}" | railway login --token
           railway link -p 3b18d122-806e-42b8-8b70-8ccf348ba791
-
-      - name: 🌐 Desplegar con Railway CLI
-        run: railway up --no-build
-
+          railway up --no-build
