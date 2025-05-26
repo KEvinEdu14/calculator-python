@@ -38,9 +38,14 @@ jobs:
       run: |
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-calculator
 
-    - name: 🚀 Desplegar manualmente en Railway
+    - name: 🚀 Desplegar manualmente en Railway (via archivo JSON)
       run: |
+        echo '{
+          "query": "mutation Deploy(\u0024projectId: String!) { deploymentCreate(input: {projectId: \u0024projectId}) { id }}",
+          "variables": { "projectId": "'"${{ secrets.RAILWAY_PROJECT_ID }}"'" }
+        }' > payload.json
+
         curl -X POST https://backboard.railway.app/graphql \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}" \
-        --data-binary "{\"query\":\"mutation Deploy(\$projectId: String!) { deploymentCreate(input: {projectId: \$projectId}) { id }}\",\"variables\":{\"projectId\":\"${{ secrets.RAILWAY_PROJECT_ID }}\"}}"
+        --data-binary @payload.json
