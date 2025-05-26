@@ -38,14 +38,16 @@ jobs:
       run: |
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-calculator
 
-    - name: 🚀 Desplegar manualmente en Railway (versión segura)
+    - name: 🚀 Desplegar manualmente en Railway (heredoc limpio)
       run: |
-        printf '%s\n' "{
-          \"query\": \"mutation Deploy(\$projectId: String!) { deploymentCreate(input: {projectId: \$projectId}) { id }}\",
-          \"variables\": {
-            \"projectId\": \"${{ secrets.RAILWAY_PROJECT_ID }}\"
-          }
-        }" > payload.json
+        cat > payload.json <<EOF
+{
+  "query": "mutation Deploy(\$projectId: String!) { deploymentCreate(input: {projectId: \$projectId}) { id }}",
+  "variables": {
+    "projectId": "${{ secrets.RAILWAY_PROJECT_ID }}"
+  }
+}
+EOF
 
         curl -X POST https://backboard.railway.app/graphql \
         -H "Content-Type: application/json" \
