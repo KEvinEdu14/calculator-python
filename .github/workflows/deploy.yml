@@ -39,6 +39,6 @@ jobs:
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
-          railway link -p 3b18d122-806e-42b8-8b70-8ccf348ba791
+          railway login -p 3b18d122-806e-42b8-8b70-8ccf348ba791
           railway up --no-build
 

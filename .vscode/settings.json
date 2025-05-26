@@ -1,5 +1,6 @@
 {
     "conventionalCommits.scopes": [
-        "Test to new YML"
+        "Test to new YML",
+        "fix the code"
     ]
 }
