@@ -48,6 +48,7 @@ jobs:
           }" > payload.json
 
           curl -X POST https://backboard.railway.com/graphql/v2 \
-            -H \"Authorization: Bearer $RAILWAY_TOKEN\" \
-            -H \"Content-Type: application/json\" \
+            -H 'Authorization: Bearer '"$RAILWAY_TOKEN"'' \
+            -H 'Content-Type: application/json' \
             --data-binary @payload.json
+
