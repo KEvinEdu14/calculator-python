@@ -38,12 +38,12 @@ jobs:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
         run: |
-          echo '{
-            "query": "mutation Deploy($projectId: String!) { deploymentCreate(input: { projectId: $projectId }) { id } }",
-            "variables": {
-              "projectId": "'"$PROJECT_ID"'"
+          printf '%s\n' "{
+            \"query\": \"mutation Deploy(\$projectId: String!) { deploymentCreate(input: { projectId: \$projectId }) { id } }\",
+            \"variables\": {
+              \"projectId\": \"${PROJECT_ID}\"
             }
-          }' > payload.json
+          }" > payload.json
 
           curl -X POST https://backboard.railway.com/graphql/v2 \
             -H "Authorization: Bearer $RAILWAY_TOKEN" \
