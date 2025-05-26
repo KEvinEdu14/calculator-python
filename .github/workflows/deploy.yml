@@ -33,19 +33,21 @@ jobs:
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/flask-calculator .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-calculator
 
-      - name: 🚀 Disparar despliegue manual con Railway API v2
+      - name: 🚀 Deploy via Railway API v2 (alternative mutation)
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
         run: |
           printf '%s\n' "{
-            \"query\": \"mutation Deploy(\$projectId: String!) { deploymentCreate(input: { projectId: \$projectId }) { id } }\",
+            \"query\": \"mutation DeploymentCreate(\$input: DeploymentCreateInput!) { deploymentCreate(input: \$input) { id } }\",
             \"variables\": {
-              \"projectId\": \"${PROJECT_ID}\"
+              \"input\": {
+                \"projectId\": \"${PROJECT_ID}\"
+              }
             }
           }" > payload.json
 
           curl -X POST https://backboard.railway.com/graphql/v2 \
-            -H "Authorization: Bearer $RAILWAY_TOKEN" \
-            -H "Content-Type: application/json" \
+            -H \"Authorization: Bearer $RAILWAY_TOKEN\" \
+            -H \"Content-Type: application/json\" \
             --data-binary @payload.json
