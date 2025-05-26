@@ -37,7 +37,8 @@ jobs:
       - name: 📤 Subir imagen a DockerHub
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-calculator
-      - name: ✅ Confirmación final: Railway GitHub Deploy
+
+      - name: Confirmacion Final Railway GitHub Deploy
         run: |
           echo "Imagen Docker subida correctamente a DockerHub."
           echo "GitHub Actions ejecutado exitosamente."
