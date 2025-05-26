@@ -22,7 +22,7 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: 🐳 Login en DockerHub
+      - name: 🐳 Login DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -36,7 +36,7 @@ jobs:
       - name: 🚀 Instalar Railway CLI
         run: curl -fsSL https://railway.app/install.sh | sh
 
-      - name: 🌐 Desplegar manualmente a Railway con CLI
+      - name: 🌐 Desplegar con Railway CLI (AUTENTICADO)
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
